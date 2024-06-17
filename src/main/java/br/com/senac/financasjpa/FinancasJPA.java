@@ -1,27 +1,20 @@
 package br.com.senac.financasjpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import br.com.senac.financasjpa.persistencia.Despesa;
+import br.com.senac.financasjpa.persistencia.DespesaDAO;
 import java.time.LocalDate;
 
 public class FinancasJPA {
 
     public static void main(String[] args) {
-        
-        EntityManagerFactory fabricaEntidade = Persistence.createEntityManagerFactory("Financas-PU");
-        EntityManager manager = fabricaEntidade.createEntityManager();
-        
-        Despesa gasto = new Despesa();
-        gasto.setDescricao("Primeira despesa");
-        gasto.setValor(10.50);
-        gasto.setData(LocalDate.of(2024, 6, 4));
-        
-        manager.getTransaction().begin();
-        manager.persist(gasto);
-        manager.getTransaction().commit();
-        
-        manager.close();
-        fabricaEntidade.close();
+
+        DespesaDAO despesaDao = new DespesaDAO();
+
+        Despesa d = new Despesa();
+        d.setDescricao("Compras de mercado");
+        d.setValor(165.70);
+        d.setData(LocalDate.of(2022, 11, 15));
+
+        despesaDao.cadastrar(d);
     }
 }

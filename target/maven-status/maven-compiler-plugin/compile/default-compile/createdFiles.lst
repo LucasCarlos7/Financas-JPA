@@ -1,2 +1,4 @@
-br\com\senac\financasjpa\Despesa.class
 br\com\senac\financasjpa\FinancasJPA.class
+br\com\senac\financasjpa\persistencia\DespesaDAO.class
+br\com\senac\financasjpa\persistencia\JPAUltil.class
+br\com\senac\financasjpa\persistencia\Despesa.class
