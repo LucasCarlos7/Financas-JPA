@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public class JPAUltil {
+public class JPAUtil {
 
     //constante para centralizar o nome da unidade de persistência
     //se o nome mudar, precisaremos alterar em um só lugar

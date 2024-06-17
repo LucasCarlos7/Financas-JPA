@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 public class DespesaDAO {
 
     public void cadastrar(Despesa d) {
-        EntityManager em = JPAUltil.getEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(d);
@@ -14,7 +14,7 @@ public class DespesaDAO {
             em.getTransaction().rollback();
             throw e;
         } finally {
-            JPAUltil.closeEntityManager();
+            JPAUtil.closeEntityManager();
         }
     }
 }

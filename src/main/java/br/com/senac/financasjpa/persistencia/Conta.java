@@ -38,4 +38,8 @@ public class Conta {
         this.banco = banco;
     }
 
+    @Override
+    public String toString() {
+        return this.nome + " (" + this.banco + ")";
+    }
 }
