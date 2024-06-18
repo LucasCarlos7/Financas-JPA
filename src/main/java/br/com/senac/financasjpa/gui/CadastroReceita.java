@@ -6,7 +6,12 @@ package br.com.senac.financasjpa.gui;
 
 import br.com.senac.financasjpa.persistencia.Conta;
 import br.com.senac.financasjpa.persistencia.ContaDAO;
+import br.com.senac.financasjpa.persistencia.Receita;
+import br.com.senac.financasjpa.persistencia.ReceitaDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,7 +51,7 @@ public class CadastroReceita extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         fmtTxtValor = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        fmtTxtData = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         cbConta = new javax.swing.JComboBox<>();
         btnSalvar = new javax.swing.JButton();
@@ -67,8 +72,8 @@ public class CadastroReceita extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Data:");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        fmtTxtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        fmtTxtData.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Conta:");
@@ -77,6 +82,11 @@ public class CadastroReceita extends javax.swing.JFrame {
 
         btnSalvar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnSalvar.setText("OK");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,9 +106,9 @@ public class CadastroReceita extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cbConta, javax.swing.GroupLayout.Alignment.LEADING, 0, 200, Short.MAX_VALUE)
-                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(fmtTxtValor, javax.swing.GroupLayout.Alignment.LEADING)))))
+                                .addComponent(fmtTxtData, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addComponent(fmtTxtValor, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(cbConta, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -115,7 +125,7 @@ public class CadastroReceita extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtTxtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
@@ -144,6 +154,30 @@ public class CadastroReceita extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        Receita novaReceita = new Receita();
+        try{
+            //preenchendo valores, ajustando o que for necessário
+            novaReceita.setDescricao(txtDescricao.getText());
+            novaReceita.setValor(Double.parseDouble(fmtTxtValor.getText().replace(",", ".")));
+            novaReceita.setData(LocalDate.parse(fmtTxtData.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            
+            //obtendo a conta do combo-box
+            Conta contaSelecionada = (Conta) cbConta.getSelectedItem();
+            //preenchendo a referência de conta na receita
+            novaReceita.setConta(contaSelecionada);
+            
+            //cadastrando de fato
+            ReceitaDAO receitaDao = new ReceitaDAO();
+            receitaDao.cadastrar(novaReceita);
+            
+            //se foi sucesso, fecha a janela
+            this.dispose();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,8 +217,8 @@ public class CadastroReceita extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<Conta> cbConta;
+    private javax.swing.JFormattedTextField fmtTxtData;
     private javax.swing.JFormattedTextField fmtTxtValor;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

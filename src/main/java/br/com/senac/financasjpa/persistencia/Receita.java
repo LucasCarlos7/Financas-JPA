@@ -16,7 +16,7 @@ public class Receita {
     private int id;
 
     private String descricao;
-    private String valor;
+    private Double valor;
 
     @ManyToOne
     @JoinColumn(name = "conta_id")
@@ -40,11 +40,11 @@ public class Receita {
         this.descricao = descricao;
     }
 
-    public String getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(String valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

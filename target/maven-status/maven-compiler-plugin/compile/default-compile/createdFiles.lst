@@ -9,6 +9,7 @@ br\com\senac\financasjpa\gui\CadastroDespesa$1.class
 br\com\senac\financasjpa\persistencia\Despesa.class
 br\com\senac\financasjpa\gui\CadastroReceita.class
 br\com\senac\financasjpa\persistencia\ReceitaDAO.class
+br\com\senac\financasjpa\gui\CadastroReceita$2.class
 br\com\senac\financasjpa\FinancasJPA.class
 br\com\senac\financasjpa\gui\CadastroConta$1.class
 br\com\senac\financasjpa\persistencia\Conta.class
