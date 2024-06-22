@@ -1,3 +1,4 @@
+br\com\senac\financasjpa\gui\ListagemDespesa$1.class
 br\com\senac\financasjpa\persistencia\ContaDAO.class
 br\com\senac\financasjpa\persistencia\Receita.class
 br\com\senac\financasjpa\persistencia\JPAUtil.class
@@ -11,7 +12,9 @@ br\com\senac\financasjpa\gui\CadastroReceita.class
 br\com\senac\financasjpa\persistencia\ReceitaDAO.class
 br\com\senac\financasjpa\gui\CadastroReceita$2.class
 br\com\senac\financasjpa\FinancasJPA.class
+br\com\senac\financasjpa\gui\ListagemDespesa.class
 br\com\senac\financasjpa\gui\CadastroConta$1.class
 br\com\senac\financasjpa\persistencia\Conta.class
 br\com\senac\financasjpa\persistencia\DespesaDAO.class
+br\com\senac\financasjpa\gui\ListagemDespesa$2.class
 br\com\senac\financasjpa\gui\CadastroReceita$1.class

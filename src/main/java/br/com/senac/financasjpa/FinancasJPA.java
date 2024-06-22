@@ -8,12 +8,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FinancasJPA {
-
+    
     public static void main(String[] args) {
-        ContaDAO cDao = new ContaDAO();
-        List<Conta> lista = cDao.listar();
-        for (Conta c : lista) {
-            System.out.println(c.getNome());
-        }
+        DespesaDAO despesaDao = new DespesaDAO();
+////        List<Despesa> lista = despesaDao.listar(filtroDescricao, dataIni, dataFim);
+////        for (Despesa d : lista) {
+////            System.out.println(d.getId() + " - " + d.getDescricao());
+////        }
+//
+        despesaDao.listar("", "", "");
+        despesaDao.listar("mercado", "", "");
+        despesaDao.listar("", "15/10/2022", "20/10/2022");
     }
 }
