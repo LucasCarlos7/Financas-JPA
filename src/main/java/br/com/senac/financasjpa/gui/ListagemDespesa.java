@@ -41,6 +41,7 @@ public class ListagemDespesa extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         fmtTxtDataFinal = new javax.swing.JFormattedTextField();
         btnPesquisar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDespesa = new javax.swing.JTable();
@@ -74,6 +75,14 @@ public class ListagemDespesa extends javax.swing.JFrame {
             }
         });
 
+        btnExcluir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -81,7 +90,10 @@ public class ListagemDespesa extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnPesquisar)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnExcluir)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPesquisar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -111,7 +123,9 @@ public class ListagemDespesa extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtDescricao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
-                .addComponent(btnPesquisar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPesquisar)
+                    .addComponent(btnExcluir))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -200,6 +214,29 @@ public class ListagemDespesa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            if (tblDespesa.getSelectedRow() >= 0) { //verifica se há algo selecionado na tabela
+                //obtem o valor da coluna id da linha selecionada
+                String id = (String) tblDespesa.getValueAt(tblDespesa.getSelectedRow(), 0);
+
+                //janela de confirmação
+                int resposta = JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir o registro " + id + "?");
+                if (resposta == 0) { //0 - yes, 1 - no, 2 - cancel
+                    //realizando a exclusão
+                    DespesaDAO despesaDao = new DespesaDAO();
+                    despesaDao.excluir(Integer.parseInt(id));
+                    JOptionPane.showMessageDialog(this, "Registro excluído com sucesso");
+
+                    //refazendo a pesquisa para atualizar a tabela na tela
+                    btnPesquisarActionPerformed(evt);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -236,6 +273,7 @@ public class ListagemDespesa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JFormattedTextField fmtTxtDataFinal;
     private javax.swing.JFormattedTextField fmtTxtDataInicial;

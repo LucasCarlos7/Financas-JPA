@@ -26,11 +26,11 @@ public class DespesaDAO {
         EntityManager em = JPAUtil.getEntityManager();
         List despesas = null;
         try {
-            String textoQuery = "SELECT d FROM Despesa d "+
-                    " WHERE (:descricao is null OR d.descricao LIKE :descricao) "+
-                    " AND (:dataInicial is null OR d.data >= :dataInicial) "+
-                    " AND (:dataFinal is null OR d.data <= :dataFinal)";
-            
+            String textoQuery = "SELECT d FROM Despesa d "
+                    + " WHERE (:descricao is null OR d.descricao LIKE :descricao) "
+                    + " AND (:dataInicial is null OR d.data >= :dataInicial) "
+                    + " AND (:dataFinal is null OR d.data <= :dataFinal)";
+
             Query consulta = em.createQuery(textoQuery);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -43,5 +43,22 @@ public class DespesaDAO {
             JPAUtil.closeEntityManager();
         }
         return despesas;
+    }
+
+    public void excluir(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            Despesa d = em.find(Despesa.class, id);
+            if (d != null) {
+                em.getTransaction().begin();
+                em.remove(d);
+                em.getTransaction().commit();
+            }
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            JPAUtil.closeEntityManager();
+        }
     }
 }
