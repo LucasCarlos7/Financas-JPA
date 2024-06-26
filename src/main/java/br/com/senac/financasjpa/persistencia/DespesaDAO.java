@@ -5,6 +5,7 @@ import jakarta.persistence.Query;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class DespesaDAO {
 
@@ -54,6 +55,29 @@ public class DespesaDAO {
                 em.remove(d);
                 em.getTransaction().commit();
             }
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            JPAUtil.closeEntityManager();
+        }
+    }
+
+    public Despesa obter(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Despesa.class, id);
+        } finally {
+            JPAUtil.closeEntityManager();
+        }
+    }
+
+    public void atualizar(Despesa d) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(d);
+            em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
             throw e;

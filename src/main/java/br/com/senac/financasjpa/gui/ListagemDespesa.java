@@ -42,6 +42,7 @@ public class ListagemDespesa extends javax.swing.JFrame {
         fmtTxtDataFinal = new javax.swing.JFormattedTextField();
         btnPesquisar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDespesa = new javax.swing.JTable();
@@ -83,6 +84,14 @@ public class ListagemDespesa extends javax.swing.JFrame {
             }
         });
 
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -91,6 +100,8 @@ public class ListagemDespesa extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnEditar)
+                        .addGap(18, 18, 18)
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
                         .addComponent(btnPesquisar))
@@ -125,7 +136,8 @@ public class ListagemDespesa extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPesquisar)
-                    .addComponent(btnExcluir))
+                    .addComponent(btnExcluir)
+                    .addComponent(btnEditar))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -187,9 +199,9 @@ public class ListagemDespesa extends javax.swing.JFrame {
     private void preencherTabela(List<Despesa> despesas) {
         String columns[] = {"Id", "Descrição", "Valor", "Data"};
         String dados[][] = new String[despesas.size()][columns.length];
-
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+        
         int i = 0;
         for (Despesa d : despesas) {
             dados[i] = new String[]{
@@ -207,7 +219,7 @@ public class ListagemDespesa extends javax.swing.JFrame {
         try {
             DespesaDAO despesaDao = new DespesaDAO();
             List<Despesa> despesas = despesaDao.listar(txtDescricao.getText(), fmtTxtDataInicial.getText(), fmtTxtDataFinal.getText());
-
+            
             preencherTabela(despesas);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Botão Pesquisar - Ocorreu uma falha\n: " + e.getMessage());
@@ -236,6 +248,27 @@ public class ListagemDespesa extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        try {
+            //criando nova tela de cadastro
+            CadastroDespesa cadastro = new CadastroDespesa();
+            
+            if (tblDespesa.getSelectedRow() >= 0) { //verifica se há linha selecionada na tabela
+                String id = (String) tblDespesa.getValueAt(tblDespesa.getSelectedRow(), 0);
+
+                //obtendo o objeto Despesa do id selecionado...
+                DespesaDAO despesaDao = new DespesaDAO();
+                Despesa despesaSelecionada = despesaDao.obter(Integer.parseInt(id));
+
+                //...e o repassando para a tela de cadastro
+                cadastro.preencherEdicao(despesaSelecionada);
+                cadastro.setVisible(true);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -273,6 +306,7 @@ public class ListagemDespesa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JFormattedTextField fmtTxtDataFinal;

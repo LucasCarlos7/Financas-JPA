@@ -4,6 +4,7 @@ import br.com.senac.financasjpa.persistencia.Despesa;
 import br.com.senac.financasjpa.persistencia.DespesaDAO;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +18,19 @@ public class CadastroDespesa extends javax.swing.JFrame {
      */
     public CadastroDespesa() {
         initComponents();
+    }
+
+    //atributo para controlar se está em edição ou em cadastro
+    private Despesa despesaEdicao = null;
+
+    public void preencherEdicao(Despesa d) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        fmtTxtData.setText(d.getData().format(formatter));
+        fmtTxtValor.setText(String.valueOf(d.getValor()));
+        txtDescricao.setText(d.getDescricao());
+
+        despesaEdicao = d;
     }
 
     /**
@@ -134,6 +148,10 @@ public class CadastroDespesa extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Despesa novaDespesa = new Despesa();
+
+        if (despesaEdicao != null) {
+            novaDespesa = despesaEdicao;
+        }
         try {
             //para a descriçao capturamos direto o valor do campo de texto
             novaDespesa.setDescricao(txtDescricao.getText());
@@ -145,7 +163,15 @@ public class CadastroDespesa extends javax.swing.JFrame {
             novaDespesa.setData(LocalDate.parse(fmtTxtData.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
             DespesaDAO despesaDao = new DespesaDAO();
-            despesaDao.cadastrar(novaDespesa);
+
+            if (despesaEdicao == null) {
+                despesaDao.cadastrar(novaDespesa);
+            } else {
+                despesaDao.atualizar(novaDespesa);
+            }
+            
+            //fechando a tela após o cadastro
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
         }
